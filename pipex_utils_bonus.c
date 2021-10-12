@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:40:56 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/12 17:59:45 by ael-mezz         ###   ########.fr       */
+/*   Created: 2021/10/12 18:07:37 by ael-mezz          #+#    #+#             */
+/*   Updated: 2021/10/12 18:24:46 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 static	char	*find_executable(t_data *data, char *path)
 {
@@ -46,10 +46,20 @@ int	parser(t_data *data, int argc, char **argv, char **envp)
 	data->argc = argc;
 	data->argv = argv;
 	data->envp = envp;
+	data->is_heredoc = FALSE;
 	if (data->argc != 5)
 	{
-		ft_putstr_fd("please provide 4 paramaters!\n", 2);
+		ft_putstr_fd("pls add/reduce more parameters\n", 2);
 		return (-1);
+	}
+	if (!strcmp(argv[1], "here_doc"))
+	{
+		data->is_heredoc = TRUE;
+		if (data->argc != 6)
+		{
+			ft_putstr_fd("pls add/reduce more parameters\n", 2);
+			return (-1);
+		}
 	}
 	return (1);
 }

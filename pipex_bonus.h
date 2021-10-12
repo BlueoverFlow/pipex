@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/18 12:47:52 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/12 17:49:35 by ael-mezz         ###   ########.fr       */
+/*   Created: 2021/10/12 18:06:15 by ael-mezz          #+#    #+#             */
+/*   Updated: 2021/10/12 18:14:01 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <sys/stat.h>
 # include <sys/fcntl.h>
 # define ERROR -1
+# define BOOL int
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_data
 {
@@ -26,6 +29,7 @@ typedef struct s_data
 	int		pipe_end[2];
 	char	**prototype;
 	pid_t	id[2];
+    BOOL    is_heredoc;
 }				t_data;
 
 void	close_fds_and_wait(t_data *data);
