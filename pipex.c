@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 12:47:52 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/12 18:02:42 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/14 09:43:19 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static	int	cmd2(t_data *data, int fd)
 
 static	int	call_child(t_data *data, int i)
 {
-	int	fd[2];
+	int		fd[2];
+	char	*path;
 
 	if ((i == 0 && cmd1(data, fd[0]) == ERROR)
 		|| (i == 1 && cmd2(data, fd[0]) == ERROR))
@@ -52,9 +53,13 @@ static	int	call_child(t_data *data, int i)
 	data->prototype = ft_split(data->argv[i + 2], ' ');
 	if (!data->prototype)
 		return (ERROR);
-	if (execve(command_path(data), data->prototype, data->envp))
+	path = command_path(data);
+	if (execve(path, data->prototype, data->envp))
+	{
+		free(path);
+		free_2d(data->prototype);
 		return (ERROR);
-	free_2d(data->prototype);
+	}
 	return (1);
 }
 
@@ -72,13 +77,14 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (++i < 2)
 	{
-		data.id[i] = fork();
-		if (data.id[i] == ERROR || (data.id[i] == 0
+		data.id = fork();
+		if (data.id == ERROR || (data.id == 0
 				&& call_child(&data, i) == ERROR))
 		{
 			perror("error: ");
 			return (ERROR);
 		}
 	}
+	close_fds_and_wait(&data);
 	return (0);
 }

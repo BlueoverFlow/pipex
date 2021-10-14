@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 16:40:56 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/12 17:59:45 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/14 11:43:17 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static	char	*find_executable(t_data *data, char *path)
 	j = -1;
 	while (tree[++j])
 	{
-		path = ft_strjoin(ft_strjoin(tree[j], "/"), data->prototype[0]);
+		path = ft_strjoin_and_free
+			(ft_strjoin(tree[j], "/"), data->prototype[0]);
 		if (!access(path, F_OK | X_OK))
 		{
 			free_2d(tree);
@@ -35,10 +36,10 @@ static	char	*find_executable(t_data *data, char *path)
 
 void	close_fds_and_wait(t_data *data)
 {
-	close(data->pipe_end[0]);
 	close(data->pipe_end[1]);
-	waitpid(data->id[0], NULL, 0);
-	waitpid(data->id[1], NULL, 0);
+	close(data->pipe_end[0]);
+	waitpid(-1, NULL, 0);
+	waitpid(data->id, NULL, 0);
 }
 
 int	parser(t_data *data, int argc, char **argv, char **envp)
@@ -51,6 +52,17 @@ int	parser(t_data *data, int argc, char **argv, char **envp)
 		ft_putstr_fd("please provide 4 paramaters!\n", 2);
 		return (-1);
 	}
+	return (1);
+}
+
+int	parser_2(t_data *data, int argc, char **argv, char **envp)
+{
+	data->argc = argc;
+	data->argv = argv;
+	data->envp = envp;
+	data->is_heredoc = FALSE;
+	if (!strcmp(argv[1], "here_doc"))
+		data->is_heredoc = TRUE;
 	return (1);
 }
 
@@ -70,6 +82,7 @@ char	*command_path(t_data *data)
 	if (path)
 	{
 		executable = find_executable(data, path);
+		free(path);
 		if (executable)
 			return (executable);
 	}

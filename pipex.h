@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 12:47:52 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/12 17:49:35 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/14 11:43:45 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,15 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/fcntl.h>
+# include <errno.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # define ERROR -1
+# define BOOL int
+# define TRUE 1
+# define FALSE 0
+# define BUFFER_SIZE 1
 
 typedef struct s_data
 {
@@ -25,11 +33,15 @@ typedef struct s_data
 	char	**envp;
 	int		pipe_end[2];
 	char	**prototype;
-	pid_t	id[2];
-}				t_data;
+	char	*document;
+	pid_t	id;
+	BOOL	is_heredoc;
+}			t_data;
 
 void	close_fds_and_wait(t_data *data);
 int		parser(t_data *data, int argc, char **argv, char **envp);
+int		parser_2(t_data *data, int argc, char **argv, char **envp);
 char	*command_path(t_data *data);
+int		hundle_heredoc(t_data *data, int i);
 
 #endif

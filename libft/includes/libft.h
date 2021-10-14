@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 15:09:32 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/11 11:35:24 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/14 11:26:51 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
-# include "get_next_line.h"
 
 typedef struct s_list
 {

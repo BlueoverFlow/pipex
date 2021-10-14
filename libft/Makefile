@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ael-mezz <ael-mezz@student.42.fr>          +#+  +:+       +#+         #
+#    By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/21 12:57:37 by ael-mezz          #+#    #+#              #
-#    Updated: 2021/06/23 18:10:24 by ael-mezz         ###   ########.fr        #
+#    Updated: 2021/10/14 11:26:31 by ael-mezz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,8 +58,6 @@ SRCS = 				srcs/ft_strcmp.c				\
 			   		srcs/ft_strcat.c				\
 					srcs/ft_ptoa.c					\
 					srcs/ft_memalloc.c				\
-					srcs/get_next_line.c			\
-					srcs/get_next_line_utils.c		\
 					srcs/other_functions.c
 
 
