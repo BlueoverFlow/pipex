@@ -6,7 +6,7 @@
 #    By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/13 08:14:39 by ael-mezz          #+#    #+#              #
-#    Updated: 2021/10/14 10:29:15 by ael-mezz         ###   ########.fr        #
+#    Updated: 2021/10/14 18:09:34 by ael-mezz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,14 +41,14 @@ all: $(SRCS) $(HEADER)
 
 bonus: $(BONUS_SRCS) $(HEADER)
 	@make -C libft && make bonus -C libft
-	@$(CC) $(BONUS_SRCS) -lreadline $(LIBFT) $(FLAGS) -o pipex_bonus
+	@$(CC) $(BONUS_SRCS) -lreadline $(LIBFT) $(FLAGS) -o pipex
 
 clean:
 	@echo "cleaning..."
 	@make clean -C libft
-	@$(RM) pipex pipex.dSYM pipex_bonus
+	@$(RM) pipex pipex.dSYM
 
 fclean:	clean
 	@make fclean -C libft
 
-re: fclean all exec
+re: fclean all

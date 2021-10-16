@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 18:03:55 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/14 12:21:46 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/14 17:51:50 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static	int	call_daughter(t_data *data, int i, int read_end)
 	path = command_path(data);
 	if (execve(path, data->prototype, data->envp))
 	{
-		free(path);
+		if (ft_strcmp(path, data->prototype[0]))
+			free(path);
 		free_2d(data->prototype);
 		return (ERROR);
 	}
