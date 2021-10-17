@@ -6,15 +6,17 @@
 #    By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/13 08:14:39 by ael-mezz          #+#    #+#              #
-#    Updated: 2021/10/14 18:09:34 by ael-mezz         ###   ########.fr        #
+#    Updated: 2021/10/17 08:21:42 by ael-mezz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS =	pipex.c			\
-		pipex_utils.c
+		pipex_utils.c	\
+		pipex_utils_2.c
 
 BONUS_SRCS =	pipex_bonus.c			\
 				pipex_utils.c			\
+				pipex_utils_2.c			\
 				pipex_utils_bonus.c
 
 LIBFT =	libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 16:40:56 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/16 18:52:48 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/17 14:12:41 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static	char	*find_executable(t_data *data, char *path)
 	{
 		path = ft_strjoin_and_free
 			(ft_strjoin(tree[j], "/"), data->prototype[0]);
-		if (!access(path, F_OK | X_OK))
+		if (!access(path, F_OK))
 		{
 			free_2d(tree);
 			return (path);
@@ -36,13 +36,22 @@ static	char	*find_executable(t_data *data, char *path)
 
 void	close_fds_and_wait(t_data *data)
 {
-	int stat;
+	int		stat;
+	t_list	*tmp;
 
 	close(data->pipe_end[1]);
 	close(data->pipe_end[0]);
-	waitpid(data->id, &stat, 0);
-	if (WIFEXITED(stat))
-		data->exit_status = WEXITSTATUS(stat);
+	while (data->ids)
+	{
+		data->id = data->ids->content;
+		waitpid(data->id->id, &stat, 0);
+		if (WIFEXITED(stat))
+			data->exit_status = WEXITSTATUS(stat);
+		tmp = data->ids->next;
+		free(data->id);
+		free(data->ids);
+		data->ids = tmp;
+	}
 }
 
 int	parser(t_data *data, int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: ael-mezz <ael-mezz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 18:03:55 by ael-mezz          #+#    #+#             */
-/*   Updated: 2021/10/14 17:51:50 by ael-mezz         ###   ########.fr       */
+/*   Updated: 2021/10/17 14:13:46 by ael-mezz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,20 @@ static	int	give_output(t_data *data, int i)
 	return (1);
 }
 
-static	int	call_daughter(t_data *data, int i, int read_end)
+static	void	call_daughter(t_data *data, int i, int read_end)
 {
-	char	*path;
+	char	*executable;
 
 	if (take_input(data, i, read_end) == ERROR || give_output(data, i) == ERROR)
-		return (ERROR);
+	{
+		perror("PIPEX: the argument");
+		exit(1);
+	}
 	close(read_end);
 	data->prototype = ft_split(data->argv[i], ' ');
-	if (!data->prototype)
-		return (ERROR);
-	path = command_path(data);
-	if (execve(path, data->prototype, data->envp))
-	{
-		if (ft_strcmp(path, data->prototype[0]))
-			free(path);
-		free_2d(data->prototype);
-		return (ERROR);
-	}
-	return (1);
+	executable = command_path(data);
+	if (execve(executable, data->prototype, data->envp))
+		assign_exit_status(data, executable);
 }
 
 static	int	call_sugar_dady(t_data *data, int i, int read_end)
@@ -86,10 +81,13 @@ static	int	call_sugar_dady(t_data *data, int i, int read_end)
 	{
 		if (data->argv[i + 2] && pipe(data->pipe_end) == ERROR)
 			return (ERROR);
-		data->id = fork();
-		if (data->id == ERROR
-			|| (data->id == 0 && call_daughter(data, i, read_end) == ERROR))
+		data->id = malloc(sizeof(t_id));
+		data->id->id = fork();
+		if (data->id->id == ERROR)
 			return (ERROR);
+		ft_lstadd_back(&(data->ids), ft_lstnew(data->id));
+		if (data->id->id == 0)
+			call_daughter(data, i, read_end);
 		read_end = data->pipe_end[0];
 		if (data->argv[++i + 1])
 		{
@@ -118,5 +116,5 @@ int	main(int argc, char **argv, char **envp)
 		return (ERROR);
 	}
 	close_fds_and_wait(&data);
-	return (0);
+	return (data.exit_status);
 }
